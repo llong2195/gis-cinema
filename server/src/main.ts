@@ -57,7 +57,7 @@ async function ConfigDocument(app: INestApplication): Promise<void> {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-  LoggerService.log(ConfigDocument.name);
+  LoggerService.log('Swagger Setup', ConfigDocument.name);
 }
 
 bootstrap();
