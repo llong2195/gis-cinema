@@ -22,8 +22,7 @@ export class RegisterRequestDto {
   @ApiProperty({ example: '1', required: false })
   @IsOptional()
   @IsNotEmpty()
-  @Type(() => Number)
-  avatarId: number;
+  avatar: string;
 
   @ApiProperty({ example: 'password' })
   @IsNotEmpty({ message: 'password is not empty' })

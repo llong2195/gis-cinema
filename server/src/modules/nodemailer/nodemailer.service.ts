@@ -4,7 +4,6 @@ import { LoggerService } from '@src/logger/custom.logger';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 export const QUEUE_EMAIL = 'QUEUE_EMAIL';
-export const QUEUE_EMAIL_SENDMAIL = 'QUEUE_EMAIL_SENDMAIL';
 @Injectable()
 export class NodemailerService {
   constructor(private readonly mailerService: MailerService, @InjectQueue(QUEUE_EMAIL) private queueMail: Queue) {}
@@ -27,7 +26,7 @@ export class NodemailerService {
 
   async sendMailwithQueue(data: string) {
     try {
-      const job = await this.queueMail.add(QUEUE_EMAIL_SENDMAIL, {
+      const job = await this.queueMail.add({
         data: data,
       });
       console.log(job.id);
