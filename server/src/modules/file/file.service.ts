@@ -3,12 +3,11 @@ import { BaseService } from '@base/base.service';
 import { FileEntity } from './entities/file.entity';
 import { FileRepository } from './file.repository';
 import { LoggerService } from 'src/logger/custom.logger';
-import sharp from 'sharp';
 import { UPLOAD_LOCATION } from '@config/config';
-import { EntityId } from 'typeorm/repository/EntityId';
 import { cloudinary } from '@src/util/cloudinary.util';
 import { ErrorCode } from '@src/enum';
 import * as fs from 'fs';
+import { resize } from '@src/util/sharp.util';
 
 @Injectable()
 export class FileService extends BaseService<FileEntity, FileRepository> {
@@ -23,19 +22,10 @@ export class FileService extends BaseService<FileEntity, FileRepository> {
     const createFile = new FileEntity(null);
     createFile.userId = userId;
     createFile.originUrl1 = `${file.filename}`;
-    await sharp(file.path)
-      .resize({
-        width: 317,
-        height: 262,
-      })
-      .toFile(UPLOAD_LOCATION + '/262x317-' + file.filename)
-      .then(() => {
-        createFile.thumbUrl = '262x317-' + file.filename;
-      })
-      .catch((err) => {
-        console.log(err);
-        throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
-      });
+    const newFileResize = await resize(file);
+    if (newFileResize) {
+      createFile.thumbUrl = `${newFileResize.width}x${newFileResize.height}-` + file.filename;
+    }
     return await this._store(createFile);
   }
 
