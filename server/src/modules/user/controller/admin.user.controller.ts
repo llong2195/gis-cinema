@@ -6,6 +6,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
   Put,
   UseInterceptors,
@@ -53,7 +54,7 @@ export class AdminUserController {
     return new BaseResponseDto<UserEntity>(plainToClass(UserEntity, createdUser));
   }
 
-  @Put('/:id')
+  @Patch('/:id')
   async update(@Param('id') id: number, @Body() userData: UpdateUserDto): Promise<BaseResponseDto<UserEntity>> {
     const createdUser = this.userService._update(id, userData);
     return new BaseResponseDto<UserEntity>(plainToClass(UserEntity, createdUser));

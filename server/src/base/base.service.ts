@@ -4,6 +4,7 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import { PAGE_SIZE } from '@config/config';
 import { IBaseService } from './i.base.service';
 import { EntityId } from 'typeorm/repository/EntityId';
+import { PaginationResponse } from './base.dto';
 
 export class BaseService<T extends BaseEntity, R extends Repository<T>> implements IBaseService<T> {
   protected readonly repository: R;
@@ -15,7 +16,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
   }
   // ADMIN
 
-  async _findByDeleted(deleted: boolean, sort: boolean, page: 0): Promise<T[] | null> {
+  async _findByDeleted(deleted: boolean, sort: boolean, page = 0): Promise<T[] | null> {
     return await this.repository.find({
       where: { deleted: deleted } as unknown as FindOptionsWhere<T>,
       skip: page * PAGE_SIZE,

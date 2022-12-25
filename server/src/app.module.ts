@@ -22,6 +22,7 @@ import { CommanderModule } from './modules/commander/commander.module';
 import { QueueModule } from '@src/modules/queue/queue.module';
 import { RedisModule } from '@src/modules/redis/redis.module';
 import { FileModule } from './modules/file/file.module';
+import { CinemaModule } from './modules/cinema/cinema.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { FileModule } from './modules/file/file.module';
     QueueModule,
     // RedisModule,
     CommanderModule,
+    CinemaModule,
   ],
   controllers: [AppController],
   providers: [

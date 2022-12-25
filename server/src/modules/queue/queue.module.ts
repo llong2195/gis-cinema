@@ -7,7 +7,7 @@ import { QueueService } from './queue.service';
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'default',
+      name: 'transcode',
     }),
   ],
   controllers: [QueueController],

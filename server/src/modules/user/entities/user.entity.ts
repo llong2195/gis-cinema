@@ -1,33 +1,34 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 import { DateAudit } from 'src/base/date_audit.entity';
 import { Role } from '@src/enum/role.enum';
 
+@Index('idx_user_email', ['email'])
 @Entity({ name: 'user' })
 export class UserEntity extends DateAudit {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'email', unique: true, nullable: true })
+  @Column({ name: 'email', unique: true, type: 'varchar', nullable: true })
   email: string;
 
-  @Column({ name: 'avatar', nullable: true })
+  @Column({ name: 'avatar', type: 'varchar', nullable: true })
   avatar: string;
 
-  @Column({ name: 'first_name', nullable: true })
+  @Column({ name: 'first_name', type: 'varchar', nullable: true })
   firstName: string;
 
-  @Column({ name: 'last_name', nullable: true })
+  @Column({ name: 'last_name', type: 'varchar', nullable: true })
   lastName: string;
 
   @Exclude()
-  @Column({ name: 'password' })
+  @Column({ name: 'password', type: 'varchar' })
   password: string;
 
-  @Column({ name: 'role', default: Role.USER })
+  @Column({ name: 'role', type: 'varchar', default: Role.USER })
   role: string;
 
-  @Column({ name: 'is_active', default: true })
+  @Column({ name: 'is_active', type: 'boolean', default: true })
   isActive: boolean;
 
   constructor(partial: Partial<UserEntity>) {

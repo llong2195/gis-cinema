@@ -6,10 +6,10 @@ export const TRANSCODING_QUEUE = 'transcode';
 
 @Injectable()
 export class QueueService {
-  constructor(@InjectQueue() private queue: Queue) {}
+  constructor(@InjectQueue(TRANSCODING_QUEUE) private queue: Queue) {}
 
   transcode() {
-    void this.queue.add(TRANSCODING_QUEUE, {
+    void this.queue.add({
       file: 'audio.mp3',
     });
   }
