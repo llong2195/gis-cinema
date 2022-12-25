@@ -22,16 +22,14 @@ export class UserCommander extends CommandRunner {
           },
         });
         if (user) {
-          await userRepository.save({
-            ...user,
-            password: bcrypt.hashSync('12345678', BCRYPT_SALT),
-            isActive: true,
-            role: Role.ADMIN,
-          });
+          user.password = '12345678';
+          user.isActive = true;
+          user.role = Role.ADMIN;
+          await user.save();
         } else {
           await userRepository.save({
             email: 'nduylong9501@gmail.com',
-            password: bcrypt.hashSync('12345678', BCRYPT_SALT),
+            password: '12345678',
             isActive: true,
             role: Role.ADMIN,
           });

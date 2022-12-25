@@ -30,10 +30,12 @@ export class AuthService {
   async login(request: LoginRequestDto): Promise<any> {
     const user = await this.userService.findByEmail(request.email);
     if (!user) {
+      console.log(35);
       throw new UnauthorizedException(ErrorCode.LOGIN_FAIL);
     }
     const compareResult = await bcrypt.compare(request.password, user.password);
     if (!compareResult) {
+      console.log(40);
       throw new UnauthorizedException(ErrorCode.LOGIN_FAIL);
     }
     if (!user.isActive) {

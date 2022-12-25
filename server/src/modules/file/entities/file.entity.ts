@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { DateAudit } from '@base/date_audit.entity';
 
-@Entity({ name: 'files' })
+@Entity({ name: 'file' })
 export class FileEntity extends DateAudit {
   @PrimaryGeneratedColumn()
   id: number;
