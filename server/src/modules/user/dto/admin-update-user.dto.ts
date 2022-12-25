@@ -35,7 +35,7 @@ export class AdminUpdateUserDto {
   })
   passwordConfirmation: string;
 
-  @ApiProperty({ example: 'role', type: Role, default: Role.USER })
+  @ApiProperty({ example: 'role', enum: Role, default: Role.USER })
   @IsOptional()
   @IsEnum(Role)
   role: Role;
