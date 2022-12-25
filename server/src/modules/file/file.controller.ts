@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -14,7 +15,7 @@ import {
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '@config/multer.config';
-import { AuthUserDto, BaseResponseDto } from '@base/base.dto';
+import { AuthUserDto, BaseResponseDto, iPaginationOption } from '@base/base.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -69,13 +70,16 @@ export class FileController {
     }
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Roles(Role.ADMIN)
   @Get('/get-all')
-  async getAll(): Promise<PaginationResponse<FileEntity>> {
-    const data = await this.uploadFileService._findByDeleted(false, true, 0);
-    const total = await this.uploadFileService._countByDeleted(false);
-    return new PaginationResponse<FileEntity>(plainToInstance(FileEntity, data), 0);
+  async getAll(@Query() pagination: iPaginationOption): Promise<PaginationResponse<FileEntity>> {
+    const page: number = pagination.page ? pagination.page : 1;
+    const limit: number = pagination.limit ? pagination.limit : 10;
+    const deleted: boolean = pagination.deleted ? pagination.deleted : false;
+    const data = await this.uploadFileService._findByDeleted(deleted, true, page);
+    const total = await this.uploadFileService._countByDeleted(deleted);
+    return new PaginationResponse<FileEntity>(plainToInstance(FileEntity, data), total);
   }
 }
