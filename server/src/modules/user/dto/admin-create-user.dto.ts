@@ -1,7 +1,8 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, Length, Validate } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, Length, Validate } from 'class-validator';
 import { PasswordConfirmValidator } from '@validators/password-confirm.validator';
 import { UniqueEmailValidator } from '@validators/unique-email.validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '@src/enum';
 
 export class AdminCreateUserDto {
   @ApiProperty({ example: 'test1@example.com' })
@@ -20,7 +21,7 @@ export class AdminCreateUserDto {
 
   @ApiProperty({ example: '1', required: false })
   @IsOptional()
-  avatarId: number;
+  avatar: string;
 
   @ApiProperty({ example: 'password' })
   @IsNotEmpty({ message: 'password is not empty' })
@@ -33,6 +34,11 @@ export class AdminCreateUserDto {
     message: 'password confirmation invalid',
   })
   passwordConfirmation: string;
+
+  @ApiProperty({ example: 'role', type: Role, default: Role.USER })
+  @IsOptional()
+  @IsEnum(Role)
+  role: Role;
 
   @ApiProperty({ example: 'true' })
   @IsNotEmpty({ message: 'isActive is not empty' })

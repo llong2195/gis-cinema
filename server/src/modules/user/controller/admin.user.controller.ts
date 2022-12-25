@@ -19,10 +19,18 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { DeleteResult } from 'typeorm';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../entities/user.entity';
+import { AdminUpdateUserDto } from '../dto/admin-update-user.dto';
+import { AdminCreateUserDto } from '../dto/admin-create-user.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { Roles } from '@src/decorators/role.decorators';
+import { Role } from '@src/enum';
 
 @ApiTags('/v1/admin')
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
+@UseGuards(JwtAuthGuard)
+@Roles(Role.ADMIN)
 @Controller('v1/admin')
 export class AdminUserController {
   constructor(private readonly userService: UserService) {}
@@ -49,13 +57,13 @@ export class AdminUserController {
   }
 
   @Post()
-  async create(@Body() userData: CreateUserDto): Promise<BaseResponseDto<UserEntity>> {
+  async create(@Body() userData: AdminCreateUserDto): Promise<BaseResponseDto<UserEntity>> {
     const createdUser = await this.userService._store(userData);
     return new BaseResponseDto<UserEntity>(plainToClass(UserEntity, createdUser));
   }
 
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body() userData: UpdateUserDto): Promise<BaseResponseDto<UserEntity>> {
+  async update(@Param('id') id: number, @Body() userData: AdminUpdateUserDto): Promise<BaseResponseDto<UserEntity>> {
     const createdUser = this.userService._update(id, userData);
     return new BaseResponseDto<UserEntity>(plainToClass(UserEntity, createdUser));
   }
