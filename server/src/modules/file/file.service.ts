@@ -7,7 +7,6 @@ import { UPLOAD_LOCATION } from '@config/config';
 import { cloudinary } from '@src/util/cloudinary.util';
 import { ErrorCode } from '@src/enum';
 import * as fs from 'fs';
-import { resize } from '@src/util/sharp.util';
 
 @Injectable()
 export class FileService extends BaseService<FileEntity, FileRepository> {
@@ -22,10 +21,6 @@ export class FileService extends BaseService<FileEntity, FileRepository> {
     const createFile = new FileEntity(null);
     createFile.userId = userId;
     createFile.originUrl1 = `${file.filename}`;
-    const newFileResize = await resize(file);
-    if (newFileResize) {
-      createFile.thumbUrl = `${newFileResize.width}x${newFileResize.height}-` + file.filename;
-    }
     return await this._store(createFile);
   }
 
