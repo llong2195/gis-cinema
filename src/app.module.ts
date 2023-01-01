@@ -16,7 +16,6 @@ import { ValidatorsModule } from '@validators/validators.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { CommanderModule } from './commander/commander.module';
-import { RedisModule } from '@src/modules/redis/redis.module';
 import { FileModule } from './modules/file/file.module';
 import { CinemaModule } from './modules/cinema/cinema.module';
 
