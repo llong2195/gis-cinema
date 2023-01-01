@@ -6,8 +6,8 @@ import { CinemaEntity } from './entities/cinema.entity';
 import { CinemaRepository } from './cinema.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CinemaEntity])],
-  controllers: [CinemaController],
-  providers: [CinemaService, CinemaService, CinemaRepository],
+    imports: [TypeOrmModule.forFeature([CinemaEntity])],
+    controllers: [CinemaController],
+    providers: [CinemaService, CinemaService, CinemaRepository],
 })
 export class CinemaModule {}

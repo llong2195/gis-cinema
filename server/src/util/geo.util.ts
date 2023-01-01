@@ -1,26 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { computeDestinationPoint, getBoundsOfDistance } from 'geolib';
 export class Point {
-  @ApiProperty({})
-  latitude: number;
+    @ApiProperty({})
+    latitude: number;
 
-  @ApiProperty({})
-  longitude: number;
+    @ApiProperty({})
+    longitude: number;
 
-  constructor(partial: Partial<Point>) {
-    Object.assign(this, partial);
-  }
+    constructor(partial: Partial<Point>) {
+        Object.assign(this, partial);
+    }
 }
 
 export const getRateLatLon = (point: Point, distance: number): { rLat: number; rLon: number } => {
-  const pos1 = computeDestinationPoint({ latitude: point.latitude, longitude: point.longitude }, distance, 180);
+    const pos1 = computeDestinationPoint({ latitude: point.latitude, longitude: point.longitude }, distance, 180);
 
-  const pos2 = computeDestinationPoint({ latitude: point.latitude, longitude: point.longitude }, distance, 90);
+    const pos2 = computeDestinationPoint({ latitude: point.latitude, longitude: point.longitude }, distance, 90);
 
-  return {
-    rLat: pos1.latitude - point.latitude,
-    rLon: pos2.longitude - point.longitude,
-  };
+    return {
+        rLat: pos1.latitude - point.latitude,
+        rLon: pos2.longitude - point.longitude,
+    };
 };
 
 /**
@@ -29,12 +29,12 @@ export const getRateLatLon = (point: Point, distance: number): { rLat: number; r
  * @returns Point
  */
 export const findARound = (point: Point, distance: number): { start: Point; end: Point } => {
-  const lo = getBoundsOfDistance(point, distance);
+    const lo = getBoundsOfDistance(point, distance);
 
-  return {
-    start: new Point(lo[0]),
-    end: new Point(lo[1]),
-  };
+    return {
+        start: new Point(lo[0]),
+        end: new Point(lo[1]),
+    };
 };
 
 /**
@@ -42,7 +42,7 @@ export const findARound = (point: Point, distance: number): { start: Point; end:
  * @returns number
  */
 export const roundLatLon = (no: number): number => {
-  return Math.round(no * 10000) / 10000;
+    return Math.round(no * 10000) / 10000;
 };
 
 /**
@@ -50,7 +50,7 @@ export const roundLatLon = (no: number): number => {
  * @returns boolean
  */
 export const checkLatitude = (lat: number): boolean => {
-  return isFinite(lat) && Math.abs(lat) <= 90;
+    return isFinite(lat) && Math.abs(lat) <= 90;
 };
 
 /**
@@ -58,5 +58,5 @@ export const checkLatitude = (lat: number): boolean => {
  * @returns boolean
  */
 export const checkLongitude = (long: number): boolean => {
-  return isFinite(long) && Math.abs(long) <= 180;
+    return isFinite(long) && Math.abs(long) <= 180;
 };

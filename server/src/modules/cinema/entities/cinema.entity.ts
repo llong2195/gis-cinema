@@ -7,32 +7,32 @@ import { Column, Index, PrimaryGeneratedColumn, Entity } from 'typeorm';
 @Index('idx_cinema_geo', ['latitude', 'longitude'])
 @Entity({ name: 'cinema' })
 export class CinemaEntity extends DateAudit {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column({ name: 'name', type: 'varchar', nullable: true })
-  name: string;
+    @Column({ name: 'name', type: 'varchar', nullable: true })
+    name: string;
 
-  @Column({ name: 'title', type: 'varchar', nullable: true })
-  title: string;
+    @Column({ name: 'title', type: 'varchar', nullable: true })
+    title: string;
 
-  @Column({ name: 'slug', type: 'varchar', nullable: true })
-  slug: string;
+    @Column({ name: 'slug', type: 'varchar', nullable: true })
+    slug: string;
 
-  @Column({ name: 'image', type: 'varchar', nullable: true })
-  image: string;
+    @Column({ name: 'image', type: 'varchar', nullable: true })
+    image: string;
 
-  @Column({ name: 'description', type: 'varchar', nullable: true })
-  description: string;
+    @Column({ name: 'description', type: 'varchar', nullable: true })
+    description: string;
 
-  @Column({ name: 'latitude', type: 'double precision', nullable: true })
-  latitude: number;
+    @Column({ name: 'latitude', type: 'double precision', nullable: true })
+    latitude: number;
 
-  @Column({ name: 'longitude', type: 'double precision', nullable: true })
-  longitude: number;
+    @Column({ name: 'longitude', type: 'double precision', nullable: true })
+    longitude: number;
 
-  constructor(partial: Partial<CinemaEntity>) {
-    super();
-    Object.assign(this, partial);
-  }
+    constructor(partial: Partial<CinemaEntity>) {
+        super();
+        Object.assign(this, partial);
+    }
 }

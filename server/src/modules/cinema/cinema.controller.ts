@@ -16,66 +16,66 @@ import { FilterDto } from './dto/filter.dto';
 @ApiTags('v1/cinema')
 @Controller('v1/cinema')
 export class CinemaController {
-  constructor(private readonly cinemaService: CinemaService) {}
+    constructor(private readonly cinemaService: CinemaService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
-  @Post()
-  async create(
-    @AuthUser() authUserDto: AuthUserDto,
-    @Body() createCinemaDto: CreateCinemaDto,
-  ): Promise<BaseResponseDto<CinemaEntity>> {
-    const data = await this.cinemaService.create(createCinemaDto);
-    return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
-  }
+    @UseGuards(JwtAuthGuard)
+    @Roles(Role.ADMIN)
+    @Post()
+    async create(
+        @AuthUser() authUserDto: AuthUserDto,
+        @Body() createCinemaDto: CreateCinemaDto,
+    ): Promise<BaseResponseDto<CinemaEntity>> {
+        const data = await this.cinemaService.create(createCinemaDto);
+        return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
+    }
 
-  @Get()
-  async index(): Promise<BaseResponseDto<CinemaEntity[]>> {
-    const data = await this.cinemaService.index();
-    return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
-  }
+    @Get()
+    async index(): Promise<BaseResponseDto<CinemaEntity[]>> {
+        const data = await this.cinemaService.index();
+        return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
+    }
 
-  @Get('/find-all')
-  async findAll(
-    @Query() pagination: iPaginationOption,
-    @Query() filter: FilterDto,
-  ): Promise<PaginationResponse<CinemaEntity>> {
-    const data = await this.cinemaService.findAll(filter, pagination);
-    const count = await this.cinemaService.count(filter, pagination);
-    return new PaginationResponse<CinemaEntity>(plainToInstance(CinemaEntity, data), count);
-  }
+    @Get('/find-all')
+    async findAll(
+        @Query() pagination: iPaginationOption,
+        @Query() filter: FilterDto,
+    ): Promise<PaginationResponse<CinemaEntity>> {
+        const data = await this.cinemaService.findAll(filter, pagination);
+        const count = await this.cinemaService.count(filter, pagination);
+        return new PaginationResponse<CinemaEntity>(plainToInstance(CinemaEntity, data), count);
+    }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<BaseResponseDto<CinemaEntity>> {
-    const data = await this.cinemaService.findOne(+id);
-    return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: number): Promise<BaseResponseDto<CinemaEntity>> {
+        const data = await this.cinemaService.findOne(+id);
+        return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
+    }
 
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
-  @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() updateCinemaDto: UpdateCinemaDto,
-  ): Promise<BaseResponseDto<CinemaEntity>> {
-    const data = await this.cinemaService.update(+id, updateCinemaDto);
-    return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
-  }
+    @UseGuards(JwtAuthGuard)
+    @Roles(Role.ADMIN)
+    @Patch(':id')
+    async update(
+        @Param('id') id: number,
+        @Body() updateCinemaDto: UpdateCinemaDto,
+    ): Promise<BaseResponseDto<CinemaEntity>> {
+        const data = await this.cinemaService.update(+id, updateCinemaDto);
+        return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
+    }
 
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
-  @Delete(':id')
-  async remove(@Param('id') id: number): Promise<BaseResponseDto<CinemaEntity>> {
-    const data = await this.cinemaService.remove(+id);
-    return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
-  }
+    @UseGuards(JwtAuthGuard)
+    @Roles(Role.ADMIN)
+    @Delete(':id')
+    async remove(@Param('id') id: number): Promise<BaseResponseDto<CinemaEntity>> {
+        const data = await this.cinemaService.remove(+id);
+        return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
+    }
 
-  @Get('/find-a-round')
-  async findARound(
-    @Query() filters: FilterDto,
-    @Query('distance') distance: number,
-  ): Promise<BaseResponseDto<CinemaEntity[]>> {
-    const data = await this.cinemaService.findAROund(filters, distance);
-    return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
-  }
+    @Get('/find-a-round')
+    async findARound(
+        @Query() filters: FilterDto,
+        @Query('distance') distance: number,
+    ): Promise<BaseResponseDto<CinemaEntity[]>> {
+        const data = await this.cinemaService.findAROund(filters, distance);
+        return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
+    }
 }

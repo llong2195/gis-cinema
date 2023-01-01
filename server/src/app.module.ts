@@ -21,50 +21,50 @@ import { FileModule } from './modules/file/file.module';
 import { CinemaModule } from './modules/cinema/cinema.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: ['.env', '.env.development.local', '.env.development'],
-      load: [appConfig, databaseConfig, authConfig],
-    }),
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['.env', '.env.development.local', '.env.development'],
+            load: [appConfig, databaseConfig, authConfig],
+        }),
 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../', '/public'),
-      serveRoot: '/',
-      exclude: ['/api/*', '/auth/*'],
-    }),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '../../', '/public'),
+            serveRoot: '/',
+            exclude: ['/api/*', '/auth/*'],
+        }),
 
-    ThrottlerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) =>
-        ({
-          ttl: config.get<number>('THROTTLE_TTL'),
-          limit: config.get<number>('THROTTLE_LIMIT'),
-        } as ThrottlerModuleOptions),
-    }),
+        ThrottlerModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) =>
+                ({
+                    ttl: config.get<number>('THROTTLE_TTL'),
+                    limit: config.get<number>('THROTTLE_LIMIT'),
+                } as ThrottlerModuleOptions),
+        }),
 
-    LoggerModule,
-    DatabaseModule,
-    AuthModule,
-    UserModule,
-    FileModule,
-    ValidatorsModule,
-    // RedisModule,
-    CommanderModule,
-    CinemaModule,
-  ],
-  controllers: [AppController],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
-    AppService,
-  ],
+        LoggerModule,
+        DatabaseModule,
+        AuthModule,
+        UserModule,
+        FileModule,
+        ValidatorsModule,
+        // RedisModule,
+        CommanderModule,
+        CinemaModule,
+    ],
+    controllers: [AppController],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: AllExceptionFilter,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ClassSerializerInterceptor,
+        },
+        AppService,
+    ],
 })
 export class AppModule {}
