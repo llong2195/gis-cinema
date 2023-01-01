@@ -5,7 +5,7 @@ import { BaseService } from '@base/base.service';
 import { CinemaEntity } from './entities/cinema.entity';
 import { CinemaRepository } from './cinema.repository';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 import { LoggerService } from '@src/logger/custom.logger';
 import slugify from 'slug';
 import { iPaginationOption } from '@base/base.dto';
@@ -36,20 +36,35 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
         });
     }
 
-    async findAll(filter: FilterDto, pagination: iPaginationOption): Promise<CinemaEntity[]> {
-        const limit = pagination?.limit ? pagination.limit : PAGE_SIZE;
-        const page = pagination?.page ? pagination.page : 0;
-        const skip = limit * page;
-        const deleted = pagination?.deleted ? pagination.deleted : false;
-        return await this.repository.find({ where: { deleted: deleted }, skip: skip, take: limit });
-    }
+    async findAll(filter: FilterDto, distance = 0): Promise<CinemaEntity[]> {
+        if (distance < 1000) distance = 1000;
 
-    async count(filter: FilterDto, pagination: iPaginationOption): Promise<number> {
-        const limit = pagination?.limit ? pagination.limit : PAGE_SIZE;
-        const page = pagination?.page ? pagination.page : 0;
-        const skip = limit * page;
-        const deleted = pagination?.deleted ? pagination.deleted : false;
-        return await this.repository.count({ where: { deleted: deleted } });
+        const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), distance);
+        const query = this.repository.createQueryBuilder();
+        if (filter.title != undefined) {
+            query.andWhere('title = :title', { title: Like(`%${filter.title}%`) });
+        }
+        if (filter.name != undefined) {
+            query.andWhere('name = :name', { name: Like(`%${filter.name}%`) });
+        }
+        if (filter.description != undefined) {
+            query.andWhere('description = :description', { description: Like(`%${filter.description}%`) });
+        }
+        query
+            .andWhere('deleted = :deleted', { deleted: false })
+            .andWhere('latitude >= :latitude1', {
+                latitude1: points.start.latitude,
+            })
+            .andWhere('latitude <= :latitude2', {
+                latitude2: points.end.latitude,
+            })
+            .andWhere('longitude >= :longitude1', {
+                longitude1: points.start.longitude,
+            })
+            .andWhere('longitude <= :longitude2', {
+                longitude2: points.end.longitude,
+            });
+        return query.getMany();
     }
 
     async findOne(id: number): Promise<CinemaEntity> {

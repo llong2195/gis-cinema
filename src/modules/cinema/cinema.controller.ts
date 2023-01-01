@@ -35,14 +35,13 @@ export class CinemaController {
         return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
     }
 
-    @Get('/find-all')
+    @Get('/search')
     async findAll(
-        @Query() pagination: iPaginationOption,
         @Query() filter: FilterDto,
-    ): Promise<PaginationResponse<CinemaEntity>> {
-        const data = await this.cinemaService.findAll(filter, pagination);
-        const count = await this.cinemaService.count(filter, pagination);
-        return new PaginationResponse<CinemaEntity>(plainToInstance(CinemaEntity, data), count);
+        @Query('distance') distance: number,
+    ): Promise<BaseResponseDto<CinemaEntity[]>> {
+        const data = await this.cinemaService.findAll(filter, distance);
+        return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
     }
 
     @Get(':id')
