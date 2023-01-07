@@ -36,10 +36,8 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
         });
     }
 
-    async findAll(filter: FilterDto, distance = 0): Promise<CinemaEntity[]> {
-        if (distance < 1000) distance = 1000;
-
-        const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), distance);
+    async search(filter: FilterDto): Promise<CinemaEntity[]> {
+        
         const query = this.repository.createQueryBuilder();
         if (filter.title != undefined) {
             query.andWhere('title = :title', { title: Like(`%${filter.title}%`) });
@@ -50,20 +48,25 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
         if (filter.description != undefined) {
             query.andWhere('description = :description', { description: Like(`%${filter.description}%`) });
         }
-        query
-            .andWhere('deleted = :deleted', { deleted: false })
-            .andWhere('latitude >= :latitude1', {
-                latitude1: points.start.latitude,
-            })
-            .andWhere('latitude <= :latitude2', {
-                latitude2: points.end.latitude,
-            })
-            .andWhere('longitude >= :longitude1', {
-                longitude1: points.start.longitude,
-            })
-            .andWhere('longitude <= :longitude2', {
-                longitude2: points.end.longitude,
-            });
+        if (filter.latitude != undefined && filter.longitude != undefined && filter?.distance != undefined) {
+            const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), filter.distance);
+
+            query
+                .andWhere('latitude >= :latitude1', {
+                    latitude1: points.start.latitude,
+                })
+                .andWhere('latitude <= :latitude2', {
+                    latitude2: points.end.latitude,
+                })
+                .andWhere('longitude >= :longitude1', {
+                    longitude1: points.start.longitude,
+                })
+                .andWhere('longitude <= :longitude2', {
+                    longitude2: points.end.longitude,
+                });
+        }
+        query.andWhere('deleted = :deleted', { deleted: false });
+
         return query.getMany();
     }
 

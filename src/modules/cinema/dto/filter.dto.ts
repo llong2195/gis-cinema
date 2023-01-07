@@ -21,15 +21,22 @@ export class FilterDto {
     @IsNotEmpty()
     description: string;
 
-    @ApiProperty({ example: 'latitude', type: Number, required: false })
+    @ApiProperty({ example: '21.01282545757188', type: Number, required: false })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
     latitude: number;
 
-    @ApiProperty({ example: 'IsNumber', type: Number, required: false })
+    @ApiProperty({ example: '105.84975093015775', type: Number, required: false })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
     longitude: number;
+
+
+    @ApiProperty({ example: 'distance: 900000', type: Number, required: false })
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    distance: number
 }
