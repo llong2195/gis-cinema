@@ -36,9 +36,8 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
         });
     }
 
-    async findAll(filter: FilterDto, distance = 0): Promise<CinemaEntity[]> {
-        if (distance < 1000) distance = 1000;
-
+    async search(filter: FilterDto): Promise<CinemaEntity[]> {
+        
         const query = this.repository.createQueryBuilder();
         if (filter.title != undefined) {
             query.andWhere('title = :title', { title: Like(`%${filter.title}%`) });
@@ -49,8 +48,8 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
         if (filter.description != undefined) {
             query.andWhere('description = :description', { description: Like(`%${filter.description}%`) });
         }
-        if (filter.latitude != undefined && filter.longitude != undefined) {
-            const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), distance);
+        if (filter.latitude != undefined && filter.longitude != undefined && filter?.distance != undefined) {
+            const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), filter.distance);
 
             query
                 .andWhere('latitude >= :latitude1', {

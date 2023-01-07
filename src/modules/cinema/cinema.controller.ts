@@ -38,9 +38,8 @@ export class CinemaController {
     @Get('/search')
     async findAll(
         @Query() filter: FilterDto,
-        @Query('distance') distance: number,
     ): Promise<BaseResponseDto<CinemaEntity[]>> {
-        const data = await this.cinemaService.findAll(filter, distance);
+        const data = await this.cinemaService.search(filter);
         return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
     }
 
@@ -69,12 +68,12 @@ export class CinemaController {
         return new BaseResponseDto<CinemaEntity>(plainToInstance(CinemaEntity, data));
     }
 
-    @Get('/find-a-round')
-    async findARound(
-        @Query() filters: FilterDto,
-        @Query('distance') distance: number,
-    ): Promise<BaseResponseDto<CinemaEntity[]>> {
-        const data = await this.cinemaService.findAROund(filters, distance);
-        return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
-    }
+    // @Get('/find-a-round')
+    // async findARound(
+    //     @Query() filters: FilterDto,
+    //     @Query('distance') distance: number,
+    // ): Promise<BaseResponseDto<CinemaEntity[]>> {
+    //     const data = await this.cinemaService.findAROund(filters, distance);
+    //     return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
+    // }
 }
