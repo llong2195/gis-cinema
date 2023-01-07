@@ -3,31 +3,31 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FilterDto {
-    @ApiProperty({ example: 'name', type: String, required: true })
+    @ApiProperty({ example: 'name', type: String, required: false })
     @IsOptional()
     @IsString()
     @IsNotEmpty()
     name: string;
 
-    @ApiProperty({ example: 'title', type: String, required: true })
+    @ApiProperty({ example: 'title', type: String, required: false })
     @IsOptional()
     @IsString()
     @IsNotEmpty()
     title: string;
 
-    @ApiProperty({ example: 'description', type: String, required: true })
+    @ApiProperty({ example: 'description', type: String, required: false })
     @IsOptional()
     @IsString()
     @IsNotEmpty()
     description: string;
 
-    @ApiProperty({ example: 'latitude', type: Number, required: true })
+    @ApiProperty({ example: 'latitude', type: Number, required: false })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
     latitude: number;
 
-    @ApiProperty({ example: 'IsNumber', type: Number, required: true })
+    @ApiProperty({ example: 'IsNumber', type: Number, required: false })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
