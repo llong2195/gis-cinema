@@ -29,8 +29,8 @@ import { Role } from '@src/enum';
 @ApiTags('/v1/admin')
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(JwtAuthGuard)
-@Roles(Role.ADMIN)
+// @UseGuards(JwtAuthGuard)
+// @Roles(Role.ADMIN)
 @Controller('v1/admin/user')
 export class AdminUserController {
     constructor(private readonly userService: UserService) {}

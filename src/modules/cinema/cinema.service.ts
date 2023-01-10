@@ -37,20 +37,21 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
     }
 
     async search(filter: FilterDto): Promise<CinemaEntity[]> {
-        
         const query = this.repository.createQueryBuilder();
         if (filter.title != undefined) {
-            query.andWhere('title = :title', { title: Like(`%${filter.title}%`) });
+            query.andWhere('title like :title', { title: `%${filter.title}%` });
         }
         if (filter.name != undefined) {
-            query.andWhere('name = :name', { name: Like(`%${filter.name}%`) });
+            query.andWhere('name like :name', { name: `%${filter.name}%` });
         }
         if (filter.description != undefined) {
-            query.andWhere('description = :description', { description: Like(`%${filter.description}%`) });
+            query.andWhere('description like :description', { description: `%${filter.description}%` });
         }
-        if (filter.latitude != undefined && filter.longitude != undefined && filter?.distance != undefined) {
-            const points = findARound(new Point({ latitude: filter.latitude, longitude: filter.longitude }), filter.distance);
-
+        if (filter.latitude != undefined && filter.longitude != undefined && filter.distance != undefined) {
+            const points = findARound(
+                new Point({ latitude: filter.latitude, longitude: filter.longitude }),
+                filter.distance,
+            );
             query
                 .andWhere('latitude >= :latitude1', {
                     latitude1: points.start.latitude,
@@ -66,7 +67,7 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
                 });
         }
         query.andWhere('deleted = :deleted', { deleted: false });
-
+        console.log(query);
         return query.getMany();
     }
 
