@@ -31,7 +31,7 @@ import { Role } from '@src/enum';
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(JwtAuthGuard)
 @Roles(Role.ADMIN)
-@Controller('v1/admin')
+@Controller('v1/admin/user')
 export class AdminUserController {
     constructor(private readonly userService: UserService) {}
 
