@@ -39,13 +39,13 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
     async search(filter: FilterDto): Promise<CinemaEntity[]> {
         const query = this.repository.createQueryBuilder();
         if (filter.title != undefined) {
-            query.andWhere('title like :title', { title: `%${filter.title}%` });
+            query.andWhere('title like :title', { title: `%${filter.title.trim()}%` });
         }
         if (filter.name != undefined) {
-            query.andWhere('name like :name', { name: `%${filter.name}%` });
+            query.andWhere('name like :name', { name: `%${filter.name.trim()}%` });
         }
         if (filter.description != undefined) {
-            query.andWhere('description like :description', { description: `%${filter.description}%` });
+            query.andWhere('description like :description', { description: `%${filter.description.trim()}%` });
         }
         if (filter.latitude != undefined && filter.longitude != undefined && filter.distance != undefined) {
             const points = findARound(
@@ -67,7 +67,6 @@ export class CinemaService extends BaseService<CinemaEntity, CinemaRepository> {
                 });
         }
         query.andWhere('deleted = :deleted', { deleted: false });
-        console.log(query);
         return query.getMany();
     }
 

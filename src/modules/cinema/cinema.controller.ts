@@ -36,9 +36,7 @@ export class CinemaController {
     }
 
     @Get('/search')
-    async findAll(
-        @Query() filter: FilterDto,
-    ): Promise<BaseResponseDto<CinemaEntity[]>> {
+    async findAll(@Query() filter: FilterDto): Promise<BaseResponseDto<CinemaEntity[]>> {
         const data = await this.cinemaService.search(filter);
         return new BaseResponseDto<CinemaEntity[]>(plainToInstance(CinemaEntity, data));
     }

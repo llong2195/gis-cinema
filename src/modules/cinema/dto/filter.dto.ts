@@ -33,10 +33,9 @@ export class FilterDto {
     @IsNumber()
     longitude: number;
 
-
     @ApiProperty({ example: 'distance: 900000', type: Number, required: false })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    distance: number
+    distance: number;
 }
